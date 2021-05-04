@@ -15,14 +15,31 @@
 {% for doc in docs %}
     <b>{{ doc.name }}</b> ({{ doc.type }})
     <br>
-    <p><b>Описание:</b> {{ doc.description }}</p>
-
+    <b>Описание:</b> {{ doc.description|truncatewords:20 }}
+    <br>
+    <a href="{{ doc.get_absolute_url }}">Подробнее...</a>
     <form method="post" action="{% url 'done' doc.pk %}">
         <button type="submit">Загрузить файл</button>
     {% csrf_token %}
     </form>
     <hr>
 {% endfor %}
+
+
+
+{% if page_obj.has_other_pages %}
+    {% for p in page_obj.paginator.page_range %}
+        {% if page_obj.number == p %}
+            <span>{{ p }}</span>
+            {% else %}
+            <a href="?page={{ p }}">{{ p }}</a>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+{% endif %} 
 
 </body>
 </html>

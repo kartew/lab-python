@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ doc.name }}</title>
+</head>
+<body>
+    <h2>{{ doc.name }}</h2>
+<p>{{ doc.description }}</p>
+
+    <form method="post" action="{% url 'done' doc.pk %}">
+        <button type="submit">Загрузить файл</button>
+    {% csrf_token %}
+    </form>
+</body>
+</html>

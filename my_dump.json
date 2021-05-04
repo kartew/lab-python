@@ -1,0 +1,14 @@
+[
+   {
+      "model":"lib.doc",
+      "pk":1,
+      "fields":{
+         "name":"Steven Spielberg biography!!!!",
+         "slug":"biografiya-stivena-spilberga",
+         "description":"Steven Spielberg biography",
+         "downloads":4,
+         "type":"docx",
+         "upload":"uploads/2021/04/16/Steven Spielberg biography.docx"
+      }
+   }
+]

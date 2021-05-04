@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Doc(models.Model):
@@ -39,6 +40,9 @@ class Doc(models.Model):
     # получение относительной ссылки на загруженный файл
     def get_url(self):
         return self.upload.url
+
+    def get_absolute_url(self):
+        return reverse('file', kwargs={'slug': self.slug})
 
     # отображение в админской панели
     class Meta:
