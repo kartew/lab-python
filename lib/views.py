@@ -28,3 +28,8 @@ class GetFile(DetailView):
     model = Doc
     template_name = 'single.html'
     context_object_name = 'doc'
+
+
+class Home2(ListView):
+    model = Doc
+    template_name = 'base.html'

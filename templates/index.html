@@ -1,45 +1,71 @@
-{% load static %}
-<!doctype html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <title>{{ name }}</title>
-</head>
-<body>
-<h1>Все файлы на данном веб-сайте: </h1>
-<br>
-{% for doc in docs %}
-    <b>{{ doc.name }}</b> ({{ doc.type }})
-    <br>
-    <b>Описание:</b> {{ doc.description|truncatewords:20 }}
-    <br>
-    <a href="{{ doc.get_absolute_url }}">Подробнее...</a>
-    <form method="post" action="{% url 'done' doc.pk %}">
-        <button type="submit">Загрузить файл</button>
-    {% csrf_token %}
-    </form>
-    <hr>
-{% endfor %}
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Хранилище файлов</h1>
+                <p class="lead text-muted">Облачное хранилище Ваших файлов</p>
+
+            </div>
+        </div>
+    </section>
 
 
 
-{% if page_obj.has_other_pages %}
-    {% for p in page_obj.paginator.page_range %}
-        {% if page_obj.number == p %}
-            <span>{{ p }}</span>
-            {% else %}
-            <a href="?page={{ p }}">{{ p }}</a>
-        {% endif %}
-    {% endfor %}
-{% endif %}
+    <div class="album py-5 bg-light">
+        <div class="container">
 
-{% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
-{% endif %} 
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3">
 
-</body>
-</html>
+                {% for doc in docs %}
+                    <div class="col">
+                        <div class="card shadow-sm">
+
+                            <div class="card-body">
+                                <h4>{{ doc.name }}</h4>
+                                <p class="card-text">{{ doc.description|truncatewords:20 }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+
+                                        <form method="get" action="{{ doc.get_absolute_url }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-secondary">Подробнее
+                                            </button>
+                                            {% csrf_token %}
+                                        </form>
+
+                                        <form method="post" action="{% url 'done' doc.pk %}">
+                                            <button type="submit" class="btn btn-sm btn-outline-secondary">Скачать!
+                                            </button>
+                                            {% csrf_token %}
+                                        </form>
+                                    </div>
+                                    <small class="text-muted"><b>{{ doc.type }}</b></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+
+            <br>
+                    {% if page_obj.has_other_pages %}
+                        {% for p in page_obj.paginator.page_range %}
+                            {% if page_obj.number == p %}
+                                <sapn>{{ p }}</sapn>
+                            {% else %}
+                                <a href="?page={{ p }}">{{ p }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+                    {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
